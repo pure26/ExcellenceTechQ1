@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Todo from "./components/Todo";
 
 function App() {
+  const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    setTodos([...todos, { text: input, id: Math.random() * 999999 }]);
+  };
+  const inputTextHandler = (e) => {
+    setInput(e.target.value);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="form-container">
+        <form>
+          <input type="text" value={input} onChange={inputTextHandler} />
+          <button type="submit" onClick={submitHandler}>
+            Submit
+          </button>
+        </form>
+      </div>
+
+      <div className="todo-container">
+        {todos.map((item) => (
+          <Todo text={item.text} key={item.id} />
+        ))}
+      </div>
     </div>
   );
 }
